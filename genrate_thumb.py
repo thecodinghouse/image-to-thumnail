@@ -1,13 +1,22 @@
+# import from python lib
+import io
+try:
+    from PIL import Image, ImageOps
+except ImportError:
+    # Mac OSX
+    import Image, ImageOps
+# core django import
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 
 def generate_thumb(original, size, image_format='JPEG'):
     """
     Generates a thumbnail image and returns a ContentFile object with the thumbnail. Also creates a Thumb File.
     Arguments:
     original -- The image being resize as `File`.
-    size     -- Desired thumbnail size as `tuple`. Example: (70, 100)
+    size     -- Desired thumbnail size as `tuple`. Example: (width, height)
     format   -- Format of the original image ('JPEG', 'PNG', ...) The thumbnail will be generated using this same format
     """
-    Attachment = apps.get_model('attachments', 'Attachment')
     original.seek(0)
     image = Image.open(original)
     if image.mode not in ('L', 'RGB', 'RGBA'):
